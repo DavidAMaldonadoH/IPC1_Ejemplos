@@ -4,17 +4,19 @@ public class Vehiculo {
     private String marca;
     private String modelo;
     private String color;
-    private int tamanio;
-    private int kilometraje;
     private boolean mecanico;
 
-    public Vehiculo(String marca, String modelo, String color, int tamanio, int kilometraje, boolean mecanico) {
+    private double precio;
+
+    private String tipo;
+
+    public Vehiculo(String marca, String modelo, String color, boolean mecanico, double precio, String tipo) {
         this.marca = marca;
         this.modelo = modelo;
         this.color = color;
-        this.tamanio = tamanio;
-        this.kilometraje = kilometraje;
         this.mecanico = mecanico;
+        this.precio = precio;
+        this.tipo = tipo;
     }
 
     public String getMarca() {
@@ -41,27 +43,27 @@ public class Vehiculo {
         this.color = color;
     }
 
-    public int getTamanio() {
-        return tamanio;
-    }
-
-    public void setTamanio(int tamanio) {
-        this.tamanio = tamanio;
-    }
-
-    public int getKilometraje() {
-        return kilometraje;
-    }
-
-    public void setKilometraje(int kilometraje) {
-        this.kilometraje = kilometraje;
-    }
-
     public boolean isMecanico() {
         return mecanico;
     }
 
     public void setMecanico(boolean mecanico) {
         this.mecanico = mecanico;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }
