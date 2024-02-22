@@ -1,18 +1,18 @@
 package Vehiculo;
 
 public class Moto extends Vehiculo {
-    private int cilindraje;
+    private int numAsientos;
 
-    public Moto(String marca, String modelo, int cilindraje, boolean mecanica, int tamanio, int kilometraje) {
-        super(marca, modelo, "negro", tamanio, kilometraje, mecanica);
-        this.cilindraje = cilindraje;
+    public Moto(String ID, String marca, String modelo, String color, boolean mecanico, double precio, int numAsientos) {
+        super(ID, marca, modelo, color, mecanico, precio, "Moto");
+        this.numAsientos = numAsientos;
     }
 
-    public int getCilindraje() {
-        return cilindraje;
+    public int getNumAsientos() {
+        return numAsientos;
     }
 
-    public void setCilindraje(int cilindraje) {
-        this.cilindraje = cilindraje;
+    public void setNumAsientos(int numAsientos) {
+        this.numAsientos = numAsientos;
     }
 }

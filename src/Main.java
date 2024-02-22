@@ -1,24 +1,21 @@
+import Usuario.Agencia;
 import Vehiculo.Carro;
 import Vehiculo.Moto;
-import Vehiculo.Vehiculo;
+import Util.Estado;
 
 public class Main {
 
     public static void main(String[] args) {
+        Estado.guardarUsuario(Estado.admin);
 
-        Carro rayoMcQueen = new Carro("Toyota", "Deportivo", "rojo", 3, true);
+        Carro rayoMcQueen = new Carro("carro01", "Toyota", "Deportivo", "Rojo", true, 5000, 2);
+        Moto moto1 = new Moto("moto01", "Harley Davidson", "Chopper", "Negro", true, 4500, 2);
 
-        Moto moto1 = new Moto("Italica", "Pasola", 6, false, 1, 0);
+        Agencia miAgencia = new Agencia("agen02", "Mi Garage",  "pass1234");
+        miAgencia.agregarVehiculo(rayoMcQueen);
+        miAgencia.agregarVehiculo(moto1);
 
-        Vehiculo[] vehiculos = new Vehiculo[2];
-
-        vehiculos[0] = rayoMcQueen;
-        vehiculos[1] = moto1;
-
-        for (Vehiculo vehiculo: vehiculos) {
-            System.out.println("El color del vehiculo es: " + vehiculo.getColor());
-            System.out.println("Y tambien es " + (vehiculo.isMecanico() ? "mecanico" : "automatico"));
-        }
-
+        Estado.guardarUsuario(miAgencia);
+        MainFrame mainFrame = new MainFrame("Distribuidora de Vehiculos");
     }
 }

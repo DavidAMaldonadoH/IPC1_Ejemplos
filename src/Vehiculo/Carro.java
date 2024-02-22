@@ -1,7 +1,18 @@
 package Vehiculo;
 
 public class Carro extends Vehiculo {
-    public Carro(String marca, String modelo, String color, int tamanio, boolean esMecanico) {
-        super(marca, modelo, color, tamanio, 0, esMecanico);
+    private int numPuertas;
+
+    public Carro(String ID, String marca, String modelo, String color, boolean mecanico, double precio, int numPuertas) {
+        super(ID, marca, modelo, color, mecanico, precio, "Carro");
+        this.numPuertas = numPuertas;
+    }
+
+    public int getNumPuertas() {
+        return numPuertas;
+    }
+
+    public void setNumPuertas(int numPuertas) {
+        this.numPuertas = numPuertas;
     }
 }
