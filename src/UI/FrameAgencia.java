@@ -10,7 +10,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FrameAgencia extends JFrame {
+public class FrameAgencia extends JFrame implements ActionListener {
+
+    private final JButton btElminar;
+    private final JButton btEditar;
+    private final JButton btAgregarMoto;
+    private final JButton btAgregarCarro;
+    private DefaultTableModel tableModel;
+    private JTable jTable;
+    Agencia agencia = (Agencia) Estado.getUsuarioActual();
 
     public FrameAgencia() throws HeadlessException {
         setTitle("Agencia " + Util.Estado.getUsuarioActual().getNombre());
@@ -28,7 +36,7 @@ public class FrameAgencia extends JFrame {
         jPanel.setBorder(new EmptyBorder(16, 24, 16, 24));
         add(jPanel);
 
-        Agencia agencia = (Agencia) Estado.getUsuarioActual();
+
         String[] columns = {"ID", "Marca", "Modelo", "Color", "Precio", "Tipo"};
         String[][] data = new String[agencia.getVehiculosDisponibles().size()][6];
         for (int i = 0; i < agencia.getVehiculosDisponibles().size(); i++) {
@@ -39,8 +47,8 @@ public class FrameAgencia extends JFrame {
             data[i][4] = Double.toString(agencia.getVehiculo(i).getPrecio());
             data[i][5] = agencia.getVehiculo(i).getTipo();
         }
-        DefaultTableModel tableModel = new DefaultTableModel(data, columns);
-        JTable jTable = new JTable(tableModel);
+        tableModel = new DefaultTableModel(data, columns);
+        jTable = new JTable(tableModel);
         jTable.setRowSelectionAllowed(true);
         ListSelectionModel selectionModel = jTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -54,37 +62,57 @@ public class FrameAgencia extends JFrame {
         jPanel.add(titulo, BorderLayout.NORTH);
 
         JPanel buttonsPanel = new JPanel(flowLayout);
-        JButton btElminar = new JButton("Eliminar");
-        btElminar.setBackground(Paleta.primario);
+
+        btElminar = new JButton("Eliminar");
+        btElminar.setBackground(Paleta.texto);
         btElminar.setForeground(Paleta.fondo);
-        JButton btEditar = new JButton("Editar");
+        btElminar.setFont(Fuentes.normal);
+
+        btEditar = new JButton("Editar");
         btEditar.setBackground(Paleta.secundario);
         btEditar.setForeground(Paleta.texto);
-        buttonsPanel.add(btElminar);
-        buttonsPanel.add(btEditar);
-        buttonsPanel.setBackground(Paleta.fondo);
-        btElminar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if(jTable.getSelectedRow() != -1) {
-                    agencia.eliminarVehiculo(jTable.getSelectedRow());
-                    tableModel.removeRow(jTable.getSelectedRow());
-                    JOptionPane.showMessageDialog(null, "Selected row deleted successfully");
-                }
-                agencia.mostrarVehiculos();
-            }
-        });
+        btEditar.setFont(Fuentes.normal);
 
-        btEditar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(jTable.getSelectedRow());
-            }
-        });
+        btAgregarMoto = new JButton("Agregar Moto");
+        btAgregarMoto.setBackground(Paleta.primario);
+        btAgregarMoto.setForeground(Paleta.texto);
+        btAgregarMoto.setFont(Fuentes.normal);
+        btAgregarCarro = new JButton("Agregar Carro");
+        btAgregarCarro.setBackground(Paleta.primario);
+        btAgregarCarro.setForeground(Paleta.texto);
+        btAgregarCarro.setFont(Fuentes.normal);
+        buttonsPanel.add(btAgregarMoto);
+        buttonsPanel.add(btAgregarCarro);
+        buttonsPanel.add(btEditar);
+        buttonsPanel.add(btElminar);
+        buttonsPanel.setBackground(Paleta.fondo);
+        btElminar.addActionListener(this);
+        btEditar.addActionListener(this);
+        btAgregarCarro.addActionListener(this);
         jPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
         setVisible(true);
         revalidate();
         repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btElminar) {
+            if (jTable.getSelectedRow() != -1) {
+                agencia.eliminarVehiculo(jTable.getSelectedRow());
+                tableModel.removeRow(jTable.getSelectedRow());
+                JOptionPane.showMessageDialog(null, "Vehiculo eliminado con exito");
+            }
+        } else if (e.getSource() == btEditar) {
+            System.out.println(jTable.getSelectedRow());
+            agencia.mostrarVehiculos();
+        } else if (e.getSource() == btAgregarCarro) {
+            new FrameAgregarCarro("Agregar Carro", tableModel);
+        } else if (e.getSource() == btAgregarMoto) {
+            System.out.println("Por Hacer");
+        } else {
+            System.out.println(e.getSource());
+        }
     }
 }
