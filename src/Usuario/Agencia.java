@@ -23,6 +23,10 @@ public class Agencia extends Usuario {
         this.vehiculosDisponibles.remove(indice);
     }
 
+    public Vehiculo getVehiculo(int indice) {
+        return this.vehiculosDisponibles.get(indice);
+    }
+
     public int getCantidadVehiculosDispobibles() {
         return this.vehiculosDisponibles.size();
     }

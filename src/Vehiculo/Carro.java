@@ -3,8 +3,8 @@ package Vehiculo;
 public class Carro extends Vehiculo {
     private int numPuertas;
 
-    public Carro(String marca, String modelo, String color, boolean mecanico, double precio, int numPuertas) {
-        super(marca, modelo, color, mecanico, precio, "Carro");
+    public Carro(String ID, String marca, String modelo, String color, boolean mecanico, double precio, int numPuertas) {
+        super(ID, marca, modelo, color, mecanico, precio, "Carro");
         this.numPuertas = numPuertas;
     }
 

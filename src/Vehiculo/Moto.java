@@ -3,8 +3,8 @@ package Vehiculo;
 public class Moto extends Vehiculo {
     private int numAsientos;
 
-    public Moto(String marca, String modelo, String color, boolean mecanico, double precio, int numAsientos) {
-        super(marca, modelo, color, mecanico, precio, "Moto");
+    public Moto(String ID, String marca, String modelo, String color, boolean mecanico, double precio, int numAsientos) {
+        super(ID, marca, modelo, color, mecanico, precio, "Moto");
         this.numAsientos = numAsientos;
     }
 

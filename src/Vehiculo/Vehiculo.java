@@ -1,22 +1,31 @@
 package Vehiculo;
 
-public class Vehiculo {
+public abstract class Vehiculo {
+    private String ID;
     private String marca;
     private String modelo;
     private String color;
     private boolean mecanico;
-
     private double precio;
 
     private String tipo;
 
-    public Vehiculo(String marca, String modelo, String color, boolean mecanico, double precio, String tipo) {
+    public Vehiculo(String ID, String marca, String modelo, String color, boolean mecanico, double precio, String tipo) {
+        this.ID = ID;
         this.marca = marca;
         this.modelo = modelo;
         this.color = color;
         this.mecanico = mecanico;
         this.precio = precio;
         this.tipo = tipo;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getMarca() {
