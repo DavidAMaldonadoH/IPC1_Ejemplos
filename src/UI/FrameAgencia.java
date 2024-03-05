@@ -2,13 +2,20 @@ package UI;
 
 import Usuario.Agencia;
 import Util.Estado;
+import Vehiculo.Vehiculo;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class FrameAgencia extends JFrame implements ActionListener {
 
@@ -16,8 +23,9 @@ public class FrameAgencia extends JFrame implements ActionListener {
     private final JButton btEditar;
     private final JButton btAgregarMoto;
     private final JButton btAgregarCarro;
-    private DefaultTableModel tableModel;
-    private JTable jTable;
+    private final DefaultTableModel tableModel;
+    private final JTable jTable;
+    private final DefaultCategoryDataset datos;
     Agencia agencia = (Agencia) Estado.getUsuarioActual();
 
     public FrameAgencia() throws HeadlessException {
@@ -89,8 +97,41 @@ public class FrameAgencia extends JFrame implements ActionListener {
         btElminar.addActionListener(this);
         btEditar.addActionListener(this);
         btAgregarCarro.addActionListener(this);
+        btAgregarMoto.addActionListener(this);
         jPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
+        datos = new DefaultCategoryDataset();
+        datos.addValue(agencia.getCantidadCarrosDisponibles(), "Carros", "Total");
+        datos.addValue(agencia.getCantidadMotosDisponibles(), "Motos", "Total");
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Carros vs Motos",
+                "Vehiculos",
+                "Cantidad",
+                datos,
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(250, 500));
+        jPanel.add(chartPanel, BorderLayout.EAST);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+
+                FileOutputStream fileOutputStream
+                        = new FileOutputStream("agencia.txt");
+                ObjectOutputStream objectOutputStream
+                        = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(agencia);
+                objectOutputStream.flush();
+                objectOutputStream.close();
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
         setVisible(true);
         revalidate();
         repaint();
@@ -100,17 +141,23 @@ public class FrameAgencia extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btElminar) {
             if (jTable.getSelectedRow() != -1) {
+                boolean esCarro = agencia.getVehiculo(jTable.getSelectedRow()).getTipo().equals("Carro");
                 agencia.eliminarVehiculo(jTable.getSelectedRow());
                 tableModel.removeRow(jTable.getSelectedRow());
+                if (esCarro)
+                    datos.setValue(agencia.getCantidadCarrosDisponibles(), "Carros", "Total");
+                else
+                    datos.setValue(agencia.getCantidadMotosDisponibles(), "Motos", "Total");
                 JOptionPane.showMessageDialog(null, "Vehiculo eliminado con exito");
             }
         } else if (e.getSource() == btEditar) {
-            System.out.println(jTable.getSelectedRow());
-            agencia.mostrarVehiculos();
+            if (jTable.getSelectedRow() != -1) {
+                new FrameEditar(agencia.getVehiculo(jTable.getSelectedRow()), tableModel, jTable.getSelectedRow());
+            }
         } else if (e.getSource() == btAgregarCarro) {
-            new FrameAgregarCarro("Agregar Carro", tableModel);
+            new FrameAgregarCarro("Agregar Carro", tableModel, datos);
         } else if (e.getSource() == btAgregarMoto) {
-            System.out.println("Por Hacer");
+            new FrameAgregarMoto("Agregar Moto", tableModel, datos);
         } else {
             System.out.println(e.getSource());
         }

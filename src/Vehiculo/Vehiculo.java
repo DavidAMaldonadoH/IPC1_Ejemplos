@@ -1,6 +1,8 @@
 package Vehiculo;
 
-public abstract class Vehiculo {
+import java.io.Serializable;
+
+public abstract class Vehiculo implements Serializable {
     private String ID;
     private String marca;
     private String modelo;

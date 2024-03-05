@@ -2,7 +2,7 @@ package UI;
 
 import Usuario.Agencia;
 import Util.Estado;
-import Vehiculo.Carro;
+import Vehiculo.Moto;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
@@ -12,18 +12,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FrameAgregarCarro extends JFrame implements ActionListener {
+public class FrameAgregarMoto extends JFrame implements ActionListener {
     private final JButton btAgregar;
     private final JTextField marca;
     private final JTextField modelo;
     private final JTextField color;
     private final JCheckBox mecanico;
     private final JTextField precio;
-    private final JTextField numPuertas;
+    private final JTextField asientos;
     private final DefaultTableModel tableModel;
     private final DefaultCategoryDataset datos;
 
-    public FrameAgregarCarro(String title, DefaultTableModel tableModel, DefaultCategoryDataset datos) {
+    public FrameAgregarMoto(String title, DefaultTableModel tableModel, DefaultCategoryDataset datos) {
         super(title);
         this.tableModel = tableModel;
         this.datos = datos;
@@ -37,7 +37,7 @@ public class FrameAgregarCarro extends JFrame implements ActionListener {
         jPanel.setBorder(new EmptyBorder(16, 24, 16, 24));
         this.add(jPanel);
 
-        JLabel lblTitulo = new JLabel("Agregar Carro", SwingConstants.CENTER);
+        JLabel lblTitulo = new JLabel("Agregar Moto", SwingConstants.CENTER);
         lblTitulo.setFont(Fuentes.titulo);
         lblTitulo.setForeground(Paleta.texto);
         jPanel.add(lblTitulo);
@@ -53,8 +53,8 @@ public class FrameAgregarCarro extends JFrame implements ActionListener {
         Entrada entradaMecanico = new Entrada("Es Mecanico", mecanico);
         precio = new JTextField();
         Entrada entradaPrecio = new Entrada("Precio", precio);
-        numPuertas = new JTextField();
-        Entrada entradaNumPuertas = new Entrada("Numero de Puertas", numPuertas);
+        asientos = new JTextField();
+        Entrada entradaNumPuertas = new Entrada("Numero de Asientos", asientos);
         jPanel.add(entradaMarca);
         jPanel.add(entradaModelo);
         jPanel.add(entradaColor);
@@ -62,7 +62,7 @@ public class FrameAgregarCarro extends JFrame implements ActionListener {
         jPanel.add(entradaPrecio);
         jPanel.add(entradaNumPuertas);
 
-        btAgregar = new JButton("Agregar Carro");
+        btAgregar = new JButton("Agregar Moto");
         btAgregar.setBackground(Paleta.secundario);
         btAgregar.setForeground(Paleta.texto);
         btAgregar.setFont(Fuentes.titulo2);
@@ -77,15 +77,15 @@ public class FrameAgregarCarro extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btAgregar) {
             Agencia agencia = (Agencia) Estado.getUsuarioActual();
-            String ID = String.format("C%03d", agencia.getCantidadVehiculosDispobibles() + 1);
-            agencia.agregarVehiculo(new Carro(
+            String ID = String.format("M%03d", agencia.getCantidadVehiculosDispobibles() + 1);
+            agencia.agregarVehiculo(new Moto(
                     ID,
                     marca.getText(),
                     modelo.getText(),
                     color.getText(),
                     mecanico.isSelected(),
                     Double.parseDouble(precio.getText()),
-                    Integer.parseInt(numPuertas.getText())
+                    Integer.parseInt(asientos.getText())
             ));
             this.tableModel.addRow(new String[]{
                     agencia.getVehiculosDisponibles().getLast().getID(),
@@ -94,8 +94,8 @@ public class FrameAgregarCarro extends JFrame implements ActionListener {
                     agencia.getVehiculosDisponibles().getLast().getColor(),
                     Double.toString(agencia.getVehiculosDisponibles().getLast().getPrecio()),
                     agencia.getVehiculosDisponibles().getLast().getTipo()});
-            JOptionPane.showMessageDialog(null, "Carro agregado con exito");
-            datos.setValue(agencia.getCantidadCarrosDisponibles(), "Carros", "Total");
+            JOptionPane.showMessageDialog(null, "Moto agregada con exito");
+            datos.setValue(agencia.getCantidadMotosDisponibles(), "Motos", "Total");
             this.dispose();
         }
     }

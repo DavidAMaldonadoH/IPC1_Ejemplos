@@ -1,6 +1,8 @@
 package Vehiculo;
 
-public class Moto extends Vehiculo {
+import java.io.Serializable;
+
+public class Moto extends Vehiculo implements Serializable {
     private int numAsientos;
 
     public Moto(String ID, String marca, String modelo, String color, boolean mecanico, double precio, int numAsientos) {
