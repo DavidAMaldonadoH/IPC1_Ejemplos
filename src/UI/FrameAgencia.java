@@ -119,14 +119,14 @@ public class FrameAgencia extends JFrame implements ActionListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-
-                FileOutputStream fileOutputStream
-                        = new FileOutputStream("agencia.txt");
-                ObjectOutputStream objectOutputStream
-                        = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.writeObject(agencia);
-                objectOutputStream.flush();
-                objectOutputStream.close();
+                    FileOutputStream fileOutputStream
+                            = new FileOutputStream("agencia.txt");
+                    ObjectOutputStream objectOutputStream
+                            = new ObjectOutputStream(fileOutputStream);
+                    objectOutputStream.writeObject(agencia);
+                    objectOutputStream.flush();
+                    objectOutputStream.close();
+                    agencia.generarReporte();
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }

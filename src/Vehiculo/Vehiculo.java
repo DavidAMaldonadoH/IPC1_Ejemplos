@@ -76,4 +76,12 @@ public abstract class Vehiculo implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    @Override
+    public String toString() {
+        return "\"" + ID + "\"[\n" +
+                "label = \"" + this.marca + "|" + this.modelo + "\"\n" +
+                "shape = \"record\"\n" +
+                "];\n";
+    }
 }

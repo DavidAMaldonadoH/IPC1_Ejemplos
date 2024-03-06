@@ -5,7 +5,7 @@ import Vehiculo.Carro;
 import Vehiculo.Moto;
 
 import javax.swing.*;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Agencia extends Usuario implements Serializable {
@@ -85,6 +85,36 @@ public class Agencia extends Usuario implements Serializable {
                     vehiculo.getPrecio(),
                     vehiculo.getTipo()
             );
+        }
+    }
+
+    public void generarReporte() {
+        try (FileWriter fileWriter = new FileWriter(new File("reporte" + this.getCodigo() + ".txt"));
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            bufferedWriter.write("digraph g {\n" +
+                    "fontname=\"Helvetica,Arial,sans-serif\"\n" +
+                    "node [fontname=\"Helvetica,Arial,sans-serif\"]\n" +
+                    "edge [fontname=\"Helvetica,Arial,sans-serif\"]\n" +
+                    "graph [\n" +
+                    "rankdir = \"LR\"\n" +
+                    "];\n" +
+                    "node [\n" +
+                    "fontsize = \"16\"\n" +
+                    "shape = \"ellipse\"\n" +
+                    "];\n" +
+                    "edge [\n" +
+                    "];");
+            for (Vehiculo vehiculo : this.getVehiculosDisponibles()) {
+                bufferedWriter.write(vehiculo.toString());
+            }
+            for (int i = 0; i < this.getCantidadVehiculosDispobibles() - 1; i++) {
+                bufferedWriter.write("\"" + this.getVehiculo(i).getID() + "\" ->");
+                bufferedWriter.write("\"" + this.getVehiculo(i + 1).getID() + "\" [\n");
+                bufferedWriter.write("id = " + i + "\n];\n");
+            }
+            bufferedWriter.write("}");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
