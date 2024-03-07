@@ -2,14 +2,18 @@ package UI;
 
 import Usuario.Agencia;
 import Util.Estado;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class FrameAgencia extends JFrame implements ActionListener {
 
@@ -17,8 +21,10 @@ public class FrameAgencia extends JFrame implements ActionListener {
     JButton btEliminar;
     JButton btAgregarMoto;
     JButton btAgregarCarro;
+    JButton btEditar;
     JTable jTable;
     DefaultTableModel tableModel;
+    DefaultCategoryDataset datos;
 
     public FrameAgencia(String title) throws HeadlessException {
         super(title);
@@ -80,7 +86,42 @@ public class FrameAgencia extends JFrame implements ActionListener {
         btAgregarMoto.addActionListener(this);
         buttonsPanel.add(btAgregarMoto);
 
+        btEditar = new JButton("Editar");
+        btEditar.setForeground(Paleta.fondo);
+        btEditar.setBackground(Paleta.primario);
+        btEditar.setFont(Fuentes.normal);
+        btEditar.addActionListener(this);
+        buttonsPanel.add(btEditar);
         jPanel.add(buttonsPanel, BorderLayout.SOUTH);
+
+        datos = new DefaultCategoryDataset();
+        datos.addValue(agencia.getCantidadCarrosDisponibles(), "Carros", "Total");
+        datos.addValue(agencia.getCantidadMotosDisponibles(), "Motos", "Total");
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Carros vs Motos",
+                "Vehiculos",
+                "Cantidad",
+                datos,
+                PlotOrientation.VERTICAL,
+                true, true, false
+        );
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(250, 500));
+        jPanel.add(chartPanel, BorderLayout.EAST);
+
+        this.addWindowListener(new WindowAdapter() {
+                                   @Override
+                                   public void windowClosing(WindowEvent e) {
+                                       try {
+                                           agencia.generarReporte();
+                                       } catch (Exception ex) {
+                                           System.out.println(ex.getMessage());
+                                       }
+                                   }
+                               }
+        );
 
         setVisible(true);
         revalidate();
@@ -91,14 +132,23 @@ public class FrameAgencia extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btEliminar) {
             if (jTable.getSelectedRow() != -1) {
+                boolean esCarro = agencia.getVehiculo(jTable.getSelectedRow()).getTipo().equals("Carro");
                 agencia.eliminarVehiculo(jTable.getSelectedRow());
                 tableModel.removeRow(jTable.getSelectedRow());
                 JOptionPane.showMessageDialog(null, "Vehiculo eliminado con exito");
+                if (esCarro)
+                    datos.setValue(agencia.getCantidadCarrosDisponibles(), "Carros", "Total");
+                else
+                    datos.setValue(agencia.getCantidadMotosDisponibles(), "Motos", "Total");
             }
         } else if (e.getSource() == btAgregarCarro) {
-            new FrameAgregarCarro("Agregar Carro", tableModel);
+            new FrameAgregarCarro("Agregar Carro", tableModel, datos);
         } else if (e.getSource() == btAgregarMoto) {
-            agencia.mostrarVehiculos();
+            new FrameAgregarMoto("Agregar Moto", tableModel, datos);
+        } else if (e.getSource() == btEditar) {
+            if (jTable.getSelectedRow() != -1) {
+                new FrameEditar(agencia.getVehiculo(jTable.getSelectedRow()), tableModel, jTable.getSelectedRow());
+            }
         }
     }
 }

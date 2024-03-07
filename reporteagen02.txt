@@ -1,0 +1,31 @@
+digraph g {
+fontname="Helvetica,Arial,sans-serif"
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+graph [
+rankdir = "LR"
+];
+node [
+fontsize = "16"
+shape = "ellipse"
+];
+edge [
+];"C0001"[
+label = "Toyota|Deportivo"
+shape = "record"
+];
+"M0002"[
+label = "Harley Davidson|Chopper"
+shape = "record"
+];
+"C003"[
+label = "Honda|Civic"
+shape = "record"
+];
+"C0001" ->"M0002" [
+id = 0
+];
+"M0002" ->"C003" [
+id = 1
+];
+}
