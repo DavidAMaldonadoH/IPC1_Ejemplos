@@ -5,6 +5,7 @@ import Util.Estado;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,7 @@ public class FrameAgencia extends JFrame implements ActionListener {
 
         JPanel jPanel = new JPanel(borderLayout);
         jPanel.setBackground(Paleta.fondo);
+        jPanel.setBorder(new EmptyBorder(16, 24, 16, 24));
         add(jPanel);
 
         JLabel titulo = new JLabel("Bienvenido " + Estado.getUsuarioActual().getNombre());
@@ -49,7 +51,7 @@ public class FrameAgencia extends JFrame implements ActionListener {
             data[i][5] = agencia.getVehiculo(i).getTipo();
         }
 
-         tableModel = new DefaultTableModel(data, columnNames);
+        tableModel = new DefaultTableModel(data, columnNames);
         jTable = new JTable(tableModel);
         jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jPanel.add(jTable, BorderLayout.CENTER);
@@ -81,18 +83,20 @@ public class FrameAgencia extends JFrame implements ActionListener {
         jPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
         setVisible(true);
-
-
+        revalidate();
+        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btEliminar) {
-            System.out.println(jTable.getSelectedRow());
-            agencia.eliminarVehiculo(jTable.getSelectedRow());
-            tableModel.removeRow(jTable.getSelectedRow());
+            if (jTable.getSelectedRow() != -1) {
+                agencia.eliminarVehiculo(jTable.getSelectedRow());
+                tableModel.removeRow(jTable.getSelectedRow());
+                JOptionPane.showMessageDialog(null, "Vehiculo eliminado con exito");
+            }
         } else if (e.getSource() == btAgregarCarro) {
-            System.out.println("Agregando Carro");
+            new FrameAgregarCarro("Agregar Carro", tableModel);
         } else if (e.getSource() == btAgregarMoto) {
             agencia.mostrarVehiculos();
         }
