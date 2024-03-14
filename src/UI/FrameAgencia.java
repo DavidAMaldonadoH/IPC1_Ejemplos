@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class FrameAgencia extends JFrame implements ActionListener {
 
@@ -115,6 +117,11 @@ public class FrameAgencia extends JFrame implements ActionListener {
                                    @Override
                                    public void windowClosing(WindowEvent e) {
                                        try {
+                                           FileOutputStream fileOutputStream = new FileOutputStream("agencia.bin", true);
+                                           ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                                           objectOutputStream.writeObject(agencia);
+                                           objectOutputStream.flush();
+                                           objectOutputStream.close();
                                            agencia.generarReporte();
                                        } catch (Exception ex) {
                                            System.out.println(ex.getMessage());

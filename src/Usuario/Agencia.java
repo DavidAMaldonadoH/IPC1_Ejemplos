@@ -4,13 +4,10 @@ import Vehiculo.Vehiculo;
 import Vehiculo.Carro;
 import Vehiculo.Moto;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Agencia extends Usuario {
+public class Agencia extends Usuario implements Serializable {
     private final ArrayList<Vehiculo> vehiculosDisponibles = new ArrayList<>();
 
     public Agencia(String codigo, String nombre, String password) {

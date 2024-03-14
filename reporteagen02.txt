@@ -18,14 +18,14 @@ shape = "record"
 label = "Harley Davidson|Chopper"
 shape = "record"
 ];
-"C003"[
-label = "Honda|Civic"
+"M003"[
+label = "Honda|Carretera"
 shape = "record"
 ];
 "C0001" ->"M0002" [
 id = 0
 ];
-"M0002" ->"C003" [
+"M0002" ->"M003" [
 id = 1
 ];
 }
