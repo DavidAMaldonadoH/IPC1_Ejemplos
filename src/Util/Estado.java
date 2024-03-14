@@ -5,7 +5,7 @@ import Usuario.Usuario;
 import java.util.ArrayList;
 
 public class Estado {
-    public final static Usuario admin = new Usuario("201908312", "pass1234", "admin", "admin");
+    public final static Usuario admin = new Usuario("201908312", "admin", "pass1234", "admin");
     private final static ArrayList<Usuario> usuariosRegistrados = new ArrayList<>();
     private static Usuario usuarioActual;
 

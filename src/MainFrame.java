@@ -97,6 +97,10 @@ public class MainFrame extends JFrame {
             return;
         }
 
-        new UI.FrameAgencia();
+        if (Estado.getUsuarioActual().getTipo().equals("Agencia")) {
+            new UI.FrameAgencia();
+        } else {
+            JOptionPane.showMessageDialog(null, "Bienvenido Administrador");
+        }
     }
 }
