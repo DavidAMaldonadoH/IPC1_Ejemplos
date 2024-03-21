@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Main {
 
@@ -30,8 +32,6 @@ public class Main {
 //            Thread thread = new Thread(ejemploRunnable);
 //            thread.start();
 //        }
-
         new HilosFrame("Hilos en Java");
-
     }
 }
